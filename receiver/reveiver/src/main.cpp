@@ -18,7 +18,7 @@
 #define BACK_LEFT_MOTOR 1
 #define FRONT_RIGHT_MOTOR 2
 #define FRONT_LEFT_MOTOR 3
-uint8_t masterMacAddress[] = {0xFC,0xF5,0xC4,0x2F,0xA3,0x04}; //adresse mta3 darouri transmitter
+uint8_t masterMacAddress[] = {0xFC,0xF5,0xC4,0x2F,0xA3,0x04}; 
 
 struct MOTOR_PINS
 {
@@ -40,21 +40,21 @@ std::vector<MOTOR_PINS> motorPins =
 
 const int PWMFreq = 1000; /* 1 KHz */
 const int PWMResolution = 8;
-
-#define SIGNAL_TIMEOUT 1000  // This is signal timeout in milli seconds. We will reset the data if no signal
+ // This is signal timeout in milli seconds. We will reset the data if no signal
+#define SIGNAL_TIMEOUT 1000 
 unsigned long lastRecvTime = 0;
 
 typedef struct PacketData
 {
    float xAxisValue;
-  float yAxisValue;           //les angles el 7achetna bihom 
+  float yAxisValue;           
   float zAxisValue; 
 }PacketData;
 
-PacketData receiverData;  //win bech n7ot e data eli wosletni
+PacketData receiverData;  
 
 
-//fonction  bech tafichi el adresse mat3 el ESP32 transmitter 
+
 void printMAC(const uint8_t * mac_addr){
   char macStr[18];
   snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
@@ -66,13 +66,10 @@ void printMAC(const uint8_t * mac_addr){
 
 
 // les fonctions 
- void OnDataRecv();       //zyada
+ void OnDataRecv();       
  void printMAC();
  void rotateMotor();
 
-//fonction bech rddawer el moteuret
-//el variable motorspeed hia eli bech tet7akem fil vitesse mta3 el moteur mta3na (a7na mdeclarinha  200)
-// el variablle motornumber hia eli bech te5tar fiha amahou el moteur eli t7eb t7arkou  
 void rotateMotor(int motorNumber, int motorSpeed)
 {
   if (motorSpeed < 0)
@@ -95,30 +92,30 @@ void rotateMotor(int motorNumber, int motorSpeed)
 
 
 
-//selon el entier eli bech yji n7otou bech net7akem fi robo win bech yemchy  w el FORWARD ... des entiers declaree mel fou9
+
 void processCarMovement(int inputValue)
 {
   switch(inputValue)
   {
-    case FORWARD:   //
+    case FORWARD:   
       rotateMotor(FRONT_RIGHT_MOTOR, MAX_MOTOR_SPEED);
       rotateMotor(BACK_RIGHT_MOTOR, MAX_MOTOR_SPEED);
       rotateMotor(FRONT_LEFT_MOTOR, MAX_MOTOR_SPEED);
       rotateMotor(BACK_LEFT_MOTOR, MAX_MOTOR_SPEED);                  
       break;
-    case BACKWARD:    //
+    case BACKWARD:    
       rotateMotor(FRONT_RIGHT_MOTOR, -MAX_MOTOR_SPEED);
       rotateMotor(BACK_RIGHT_MOTOR, -MAX_MOTOR_SPEED);
       rotateMotor(FRONT_LEFT_MOTOR, -MAX_MOTOR_SPEED);
       rotateMotor(BACK_LEFT_MOTOR, -MAX_MOTOR_SPEED);   
       break;
-    case LEFT:        // fi blasetha ZZZZZZZZ
+    case LEFT:      
       rotateMotor(FRONT_RIGHT_MOTOR, MAX_MOTOR_SPEED);
       rotateMotor(BACK_RIGHT_MOTOR, -MAX_MOTOR_SPEED);
       rotateMotor(FRONT_LEFT_MOTOR, -MAX_MOTOR_SPEED);
       rotateMotor(BACK_LEFT_MOTOR, MAX_MOTOR_SPEED);   
       break;
-    case RIGHT:          // fi blasetha ZZZZZZZZ
+    case RIGHT:          
       rotateMotor(FRONT_RIGHT_MOTOR, -MAX_MOTOR_SPEED);
       rotateMotor(BACK_RIGHT_MOTOR, MAX_MOTOR_SPEED);
       rotateMotor(FRONT_LEFT_MOTOR, MAX_MOTOR_SPEED);
@@ -189,7 +186,7 @@ void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) 
   Serial.print("Z: ");
   Serial.println(receiverData.zAxisValue);
   Serial.println();
-//kifech e robo bech yet7arek selon les valeures  mta3 les angles eli jaw mel MPU9250
+
 /*
   if ( receiverData.xAxisValue < 35 && receiverData.yAxisValue < 35)
   {
@@ -207,9 +204,6 @@ void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) 
   {
     processCarMovement(BACKWARD_RIGHT);    
   }  
-
-
-
   
   else if (receiverData.zAxisValue > 65)
   {
@@ -255,13 +249,13 @@ if (receiverData.yAxisValue < -30)
   }
     else if (receiverData.zAxisValue >10 && -20<receiverData.yAxisValue<20 && -20<receiverData.xAxisValue<20)
   {
-    processCarMovement(TURN_RIGHT);   //edour 3al imin 3adi 
+    processCarMovement(TURN_RIGHT);  
   }  
   else if (receiverData.zAxisValue < -10  && -20<receiverData.yAxisValue<20 && -20<receiverData.xAxisValue<20)
   {
-    processCarMovement(TURN_LEFT);    ////edour 3al isar 3adi 
+    processCarMovement(TURN_LEFT);    
   } 
-  //ydour w yet7arek l9odem w lteli 
+ 
   /*
   if ( receiverData.xAxisValue < -30 && receiverData.yAxisValue < -30)
   {
@@ -280,15 +274,15 @@ if (receiverData.yAxisValue < -30)
     processCarMovement(BACKWARD_RIGHT);    
   }  */
   
-  //yelzem trod el Z initialise a 0 ki te5dem w tabda te7seb par rapport 3al valeur inistiale
-  //yetranslaty 3al imin w lisar 
+  
+  
    else if (receiverData.xAxisValue > 30)
   {
-    processCarMovement(RIGHT); //temchy 3al imin  fi blasetha
+    processCarMovement(RIGHT); 
   }
   else if (receiverData.xAxisValue < -30)
   {
-    processCarMovement(LEFT); //temchy 3al isar fi blasetha
+    processCarMovement(LEFT); 
   }
   //STOP
  else
@@ -357,9 +351,9 @@ void setup() {
 void loop() {
   
   //Check Signal lost.
-  // ken 93adet barcha ma jatekchh valeur jdida e robo you9ef 
+  
   unsigned long now = millis();
-  if ( now - lastRecvTime > SIGNAL_TIMEOUT ) // el SIGNAL_TIMEO hia valeur "1000" declare mel fou9
+  if ( now - lastRecvTime > SIGNAL_TIMEOUT ) 
   {
     processCarMovement(STOP); 
   }

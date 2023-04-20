@@ -20,10 +20,10 @@ BluetoothSerial SerialBT;
 typedef struct PacketData 
 {
   float xAxisValue;
-  float yAxisValue;           //les angles el 7achetna bihom 
+  float yAxisValue;          
   float zAxisValue;  
 }PacketData;
-PacketData data;     //el variable data hia eli bech nab3atha lel esp32 receiver
+PacketData data;     
 
 
 
@@ -42,62 +42,8 @@ int k=0 ;
 
 
 
-/*  
-float  rollavr=0 ,pitchavr=0 ,yawavr=0;                                     //les fonctions de houssem 
-void MPU_Angles_Avr(){
-for (int i = 0; i < 2000; i++)
-{
-mpu.update();
-float x_angle = mpu.getRoll();
-float y_angle = mpu.getPitch();
-float z_angle = mpu.getYaw();
-rollavr += (x_angle/2000);
-pitchavr += (y_angle/2000);
-yawavr += (z_angle/2000);
-delay(1);
-}}
-
-void Measured_Roll_Pitch_Yaw(){
-if (mpu.update()) {
-roll = mpu.getRoll() - rollavr -2;
-pitch = mpu.getPitch() - pitchavr +2;
-yaw = mpu.getYaw() - yawavr;
-
-Serial.print("Roll: |");
-Serial.print(roll);
-Serial.print("Pitch: |");
-Serial.print(pitch);
-Serial.print(" Yaw:  | ");
-Serial.print(yaw);
-Serial.print("\n");
-
-}
-}*/
-
-
-// implementation des fonctions 
-
-/*
-void getinitz(){
-  zInitiale = mpu.getYaw();
-  k=k+1;
-}*/
 
 void getdata() {
-  /*
-  if (k<30)
-  {
-       getinitz();
-       delay(5);
-  }
-  static unsigned long lastET = millis(); 
-  if ((millis() - lastET) > 5000) {
-  zInitiale = mpu.getYaw();
-  }
-  yaw = mpu.getYaw(zInitiale);
-
-  */
- 
  z=mpu.getGyroZ();
      if(z<-20) {   
       while (true)
@@ -121,18 +67,6 @@ void getdata() {
      else {
       yaw =0 ;
      }
-/*
-      z=mpu.getGyroZ();
-     if(z<-10) {  
-      k=0;
-        if (k<10){ 
-            yaw = -80+z;
-            k++;
-            delay(5);
-      }}
-
-      else if(z>10) {   
-       */
   roll = mpu.getRoll();
   pitch = mpu.getPitch();
   Serial.print(" roll pitch yaw  ");
@@ -177,7 +111,7 @@ void setup() {
     Serial.println("MPU connection failed. Please check your connection with `connection_check` example.");
     delay(500);
   }
-  //a5er ezyada
+  
   
   if (esp_now_init() == ESP_OK) 
   {
@@ -215,21 +149,7 @@ void loop() {
    
     
     lastEventTime = millis();
-      /*
-    x= mpu.getGyroX() ;
-     y=mpu.getGyroY() ;
-     z=mpu.getGyroZ();
-     if(z<-5 || z>5) {
-      delay(5);
-     }
-     z2=mpu.getGyroBiasZ();
-     Serial.print(x);
-  Serial.print(" | ");
-  Serial.print(y);
-  Serial.print(" | ");
-  Serial.println(z);
-  Serial.print(" | ");
-  Serial.println(z2);*/
+    
       getdata();
        data.xAxisValue =  roll;
        data.yAxisValue =  pitch;
